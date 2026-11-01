@@ -132,6 +132,73 @@ QStringList IpSplitTunnelingController::parseRuSubnets(const QByteArray &data)
     return subnets;
 }
 
+bool IpSplitTunnelingController::addSiteToMode(RouteMode mode, const QString &hostname)
+{
+    const QString normalizedHostname = normalizeHostname(hostname);
+    if (!validateHostname(normalizedHostname)) {
+        return false;
+    }
+
+    if (!m_appSettingsRepository->addVpnSite(mode, normalizedHostname)) {
+        return false;
+    }
+
+    if (!NetworkUtilities::ipAddressWithSubnetRegExp().exactMatch(normalizedHostname)) {
+        QHostInfo::lookupHost(normalizedHostname, this, [this, mode, normalizedHostname](const QHostInfo &hostInfo) {
+            QStringList ips;
+            for (const QHostAddress &address : hostInfo.addresses()) {
+                if (address.protocol() == QAbstractSocket::IPv4Protocol) {
+                    ips.append(address.toString());
+                }
+            }
+            if (!ips.isEmpty()) {
+                m_appSettingsRepository->addVpnSite(mode, normalizedHostname, ips);
+                if (mode == m_currentRouteMode) {
+                    fillSites();
+                }
+            }
+        });
+    }
+
+    if (mode == m_currentRouteMode) {
+        fillSites();
+    }
+    applyForwardAndExceptLists();
+    return true;
+}
+
+void IpSplitTunnelingController::removeSiteFromMode(RouteMode mode, const QString &hostname)
+{
+    m_appSettingsRepository->removeVpnSite(mode, hostname);
+    if (mode == m_currentRouteMode) {
+        fillSites();
+    }
+    applyForwardAndExceptLists();
+}
+
+QVector<QPair<QString, QStringList>> IpSplitTunnelingController::sitesForMode(RouteMode mode) const
+{
+    QVector<QPair<QString, QStringList>> sites;
+    const QVariantMap sitesMap = m_appSettingsRepository->vpnSites(mode);
+    for (auto it = sitesMap.constBegin(); it != sitesMap.constEnd(); ++it) {
+        sites.append(qMakePair(it.key(), SecureAppSettingsRepository::siteIpList(it.value())));
+    }
+    return sites;
+}
+
+void IpSplitTunnelingController::applyForwardAndExceptLists()
+{
+    const bool hasForwardSites = !m_appSettingsRepository->vpnSites(RouteMode::VpnOnlyForwardSites).isEmpty();
+    const bool hasExceptSites = !m_appSettingsRepository->vpnSites(RouteMode::VpnAllExceptSites).isEmpty()
+            || m_appSettingsRepository->isRuSubnetsBypassEnabled();
+
+    const RouteMode effectiveMode = hasForwardSites ? RouteMode::VpnOnlyForwardSites : RouteMode::VpnAllExceptSites;
+    if (effectiveMode != m_currentRouteMode) {
+        setRouteMode(effectiveMode);
+    }
+    toggleSplitTunneling(hasForwardSites || hasExceptSites);
+}
+
 bool IpSplitTunnelingController::addSiteInternal(const QString &hostname, const QStringList &ips)
 {
     QVariantMap existing = m_appSettingsRepository->vpnSites(m_currentRouteMode);
@@ -265,7 +332,7 @@ void IpSplitTunnelingController::fillSites()
     }
 }
 
-QString IpSplitTunnelingController::normalizeHostname(const QString &hostname) const
+QString IpSplitTunnelingController::normalizeHostname(const QString &hostname)
 {
     QString normalized = hostname;
     normalized.replace("https://", "");
@@ -280,7 +347,7 @@ QString IpSplitTunnelingController::normalizeHostname(const QString &hostname) c
     return parts.isEmpty() ? QString() : parts.first();
 }
 
-bool IpSplitTunnelingController::validateHostname(const QString &hostname) const
+bool IpSplitTunnelingController::validateHostname(const QString &hostname)
 {
     if (hostname.isEmpty()) {
         return false;

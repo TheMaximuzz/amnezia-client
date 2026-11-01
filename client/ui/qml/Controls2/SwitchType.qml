@@ -36,9 +36,13 @@ Switch {
             anchors.fill: parent
 
             radius: height / 2
-            color: AmneziaStyle.color.bgSurfaceAlt
+            color: root.checked ? AmneziaStyle.color.bgAccentSubtle : AmneziaStyle.color.bgSurfaceAlt
             border.width: 1
             border.color: root.checked ? AmneziaStyle.color.accentDark : AmneziaStyle.color.borderSoft
+
+            Behavior on color {
+                ColorAnimation { duration: 150 }
+            }
 
             Behavior on border.color {
                 ColorAnimation { duration: 150 }

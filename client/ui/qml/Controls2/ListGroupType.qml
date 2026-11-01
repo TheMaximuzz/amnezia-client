@@ -12,6 +12,8 @@ Rectangle {
 
     radius: 16
     color: AmneziaStyle.color.bgSurface
+    border.width: 1
+    border.color: AmneziaStyle.color.borderFaint
     clip: true
 
     ColumnLayout {

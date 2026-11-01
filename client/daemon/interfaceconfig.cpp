@@ -24,6 +24,9 @@ QJsonObject InterfaceConfig::toJson() const {
   json.insert("serverIpv6AddrIn", QJsonValue(m_serverIpv6AddrIn));
   json.insert("serverPort", QJsonValue((double)m_serverPort));
   json.insert("deviceMTU", QJsonValue(m_deviceMTU));
+  if (m_listenPort > 0) {
+    json.insert("listenPort", QJsonValue(m_listenPort));
+  }
   if (!m_persistentKeepalive.isEmpty()) {
     json.insert("persistentKeepalive", QJsonValue(m_persistentKeepalive));
   }
@@ -102,6 +105,10 @@ QString InterfaceConfig::toWgConf(const QMap<QString, QString>& extra) const {
 
   if (m_deviceMTU) {
     out << "MTU = " << m_deviceMTU << "\n";
+  }
+
+  if (m_listenPort > 0) {
+    out << "ListenPort = " << m_listenPort << "\n";
   }
 
   if (!m_primaryDnsServer.isEmpty()) {

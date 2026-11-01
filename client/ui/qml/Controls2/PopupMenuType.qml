@@ -73,7 +73,7 @@ Popup {
             anchors.fill: parent
 
             radius: 14
-            color: AmneziaStyle.color.bgSurface
+            color: AmneziaStyle.color.bgSheet
             visible: false
         }
 
@@ -89,7 +89,7 @@ Popup {
             anchors.fill: parent
 
             radius: 14
-            color: AmneziaStyle.color.bgSurface
+            color: AmneziaStyle.color.bgSheet
             border.width: 1
             border.color: AmneziaStyle.color.borderSoft
         }

@@ -14,11 +14,9 @@ Item {
     property Item initialFocusItem: root
     property bool isTabBarHidden: false
 
-    Rectangle {
+    GlassBackgroundType {
         anchors.fill: parent
         z: -1
-
-        color: AmneziaStyle.color.bgBase
     }
 
     StackView.onActivated: {

@@ -714,7 +714,7 @@ jobs:
   Bake-Prebuilts-Android:
     runs-on: android-runner
     needs: Detect-Changes
-    if: needs.Detect-Changes.outputs.recipes_changed == 'true'
+    if: needs.Detect-Changes.outputs.recipes_changed == 'true' && github.repository_owner == 'amnezia-vpn'
 
     env:
       ANDROID_PLATFORM: android-28
@@ -769,7 +769,7 @@ jobs:
     runs-on: android-runner
 
     needs: Bake-Prebuilts-Android
-    if: ${{ always() }}
+    if: ${{ always() && github.repository_owner == 'amnezia-vpn' }}
 
     strategy:
       fail-fast: false
@@ -1483,6 +1483,7 @@ jobs:
 
   test-android:
     runs-on: android-runner
+    if: github.repository_owner == 'amnezia-vpn'
 
     env:
       ANDROID_PLATFORM: android-28

@@ -32,6 +32,8 @@ namespace PageLoader
         PageSettingsLogViewer,
         PageSettingsSplitTunneling,
         PageSettingsAppSplitTunneling,
+        PageSettingsWindowsSplitTunneling,
+        PageSettingsLocalInterface,
         PageSettingsKillSwitch,
         PageSettingsApiServerInfo,
         PageSettingsApiAvailableCountries,

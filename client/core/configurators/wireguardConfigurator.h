@@ -40,6 +40,7 @@ public:
                                                             amnezia::ProtocolConfig protocolConfig) override;
 
     static ConnectionData genClientKeys();
+    static QString publicKeyFromPrivate(const QString &privateKeyBase64);
 
 private:
     QList<QHostAddress> getIpsFromConf(const QString &input);

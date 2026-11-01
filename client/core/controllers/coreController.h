@@ -28,6 +28,8 @@
 #include "ui/controllers/logsUiController.h"
 #include "ui/controllers/serversUiController.h"
 #include "ui/controllers/ipSplitTunnelingUiController.h"
+#include "ui/controllers/windowsSplitTunnelingUiController.h"
+#include "ui/controllers/localInterfaceUiController.h"
 #include "ui/controllers/systemController.h"
 #include "ui/controllers/languageUiController.h"
 #include "ui/controllers/updateUiController.h"
@@ -38,6 +40,7 @@
 #include "core/controllers/selfhosted/usersController.h"
 #include "core/controllers/appSplitTunnelingController.h"
 #include "core/controllers/ipSplitTunnelingController.h"
+#include "core/controllers/localInterfaceController.h"
 #include "core/controllers/allowedDnsController.h"
 #include "core/controllers/api/servicesCatalogController.h"
 #include "core/controllers/api/storePurchaseController.h"
@@ -83,6 +86,7 @@
 #include "ui/models/services/tProxyConfigModel.h"
 
 #include "ui/models/ipSplitTunnelingModel.h"
+#include "ui/models/runningProcessesModel.h"
 #include "ui/models/newsModel.h"
 
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
@@ -187,6 +191,8 @@ private:
     SystemController* m_systemController;
     NetworkReachabilityController* m_networkReachabilityController;
     AppSplitTunnelingUiController* m_appSplitTunnelingUiController;
+    WindowsSplitTunnelingUiController* m_windowsSplitTunnelingUiController;
+    LocalInterfaceUiController* m_localInterfaceUiController;
     AllowedDnsUiController* m_allowedDnsUiController;
     LanguageUiController* m_languageUiController;
     UpdateUiController* m_updateUiController;
@@ -211,6 +217,7 @@ private:
     ConnectionController* m_connectionController;
     SettingsController* m_settingsController;
     LocalProxyController* m_localProxyController;
+    LocalInterfaceController* m_localInterfaceController;
 
     ContainersModel* m_containersModel;
     ContainersModel* m_defaultServerContainersModel;
@@ -221,6 +228,9 @@ private:
     NewsModel* m_newsModel;
     AllowedDnsModel* m_allowedDnsModel;
     AppSplitTunnelingModel* m_appSplitTunnelingModel;
+    IpSplitTunnelingModel* m_tunneledSitesModel;
+    IpSplitTunnelingModel* m_excludedSitesModel;
+    RunningProcessesModel* m_runningProcessesModel;
     ClientManagementModel* m_clientManagementModel;
 
     ApiServicesModel* m_apiServicesModel;

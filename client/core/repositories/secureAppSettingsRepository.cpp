@@ -234,6 +234,46 @@ void SecureAppSettingsRepository::setRuSubnets(const QStringList &subnets, const
     setValue("Conf/ruSubnetsUpdatedAt", updatedAt);
 }
 
+int SecureAppSettingsRepository::listenPort() const
+{
+    return value("Conf/listenPort", 0).toInt();
+}
+
+void SecureAppSettingsRepository::setListenPort(int port)
+{
+    setValue("Conf/listenPort", port);
+}
+
+QString SecureAppSettingsRepository::connectionScript(const QString &stage) const
+{
+    return value("Conf/connectionScript/" + stage).toString();
+}
+
+void SecureAppSettingsRepository::setConnectionScript(const QString &stage, const QString &command)
+{
+    setValue("Conf/connectionScript/" + stage, command);
+}
+
+int SecureAppSettingsRepository::connectionScriptTimeout() const
+{
+    return value("Conf/connectionScriptTimeout", 10).toInt();
+}
+
+void SecureAppSettingsRepository::setConnectionScriptTimeout(int seconds)
+{
+    setValue("Conf/connectionScriptTimeout", seconds);
+}
+
+bool SecureAppSettingsRepository::isLocalTrafficAllowed() const
+{
+    return value("Conf/localTrafficAllowed", false).toBool();
+}
+
+void SecureAppSettingsRepository::setLocalTrafficAllowed(bool allowed)
+{
+    setValue("Conf/localTrafficAllowed", allowed);
+}
+
 namespace {
     QString appsRouteModeString(AppsRouteMode mode) {
         switch (mode) {

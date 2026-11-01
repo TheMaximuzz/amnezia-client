@@ -79,6 +79,15 @@ void CoreController::initModels()
     m_appSplitTunnelingModel = new AppSplitTunnelingModel(this);
     setQmlContextProperty("AppSplitTunnelingModel", m_appSplitTunnelingModel);
 
+    m_tunneledSitesModel = new IpSplitTunnelingModel(this);
+    setQmlContextProperty("TunneledSitesModel", m_tunneledSitesModel);
+
+    m_excludedSitesModel = new IpSplitTunnelingModel(this);
+    setQmlContextProperty("ExcludedSitesModel", m_excludedSitesModel);
+
+    m_runningProcessesModel = new RunningProcessesModel(this);
+    setQmlContextProperty("RunningProcessesModel", m_runningProcessesModel);
+
     m_protocolsModel = new ProtocolsModel(this);
     setQmlContextProperty("ProtocolsModel", m_protocolsModel);
 
@@ -180,6 +189,7 @@ void CoreController::initCoreControllers()
     m_connectionController = new ConnectionController(m_serversRepository, m_appSettingsRepository, m_vpnConnection.get(), this);
     m_settingsController = new SettingsController(m_serversRepository, m_appSettingsRepository, this);
     m_localProxyController = new LocalProxyController(m_serversRepository, m_appSettingsRepository, m_subscriptionController, this);
+    m_localInterfaceController = new LocalInterfaceController(m_serversController, m_installController, m_appSettingsRepository, this);
 }
 
 void CoreController::initControllers()
@@ -233,6 +243,14 @@ void CoreController::initControllers()
 
     m_appSplitTunnelingUiController = new AppSplitTunnelingUiController(m_appSplitTunnelingController, m_appSplitTunnelingModel, this);
     setQmlContextProperty("AppSplitTunnelingController", m_appSplitTunnelingUiController);
+
+    m_windowsSplitTunnelingUiController = new WindowsSplitTunnelingUiController(
+            m_appSplitTunnelingController, m_ipSplitTunnelingController, m_tunneledSitesModel, m_excludedSitesModel,
+            m_runningProcessesModel, this);
+    setQmlContextProperty("WindowsSplitTunnelingController", m_windowsSplitTunnelingUiController);
+
+    m_localInterfaceUiController = new LocalInterfaceUiController(m_localInterfaceController, this);
+    setQmlContextProperty("LocalInterfaceController", m_localInterfaceUiController);
 
     m_systemController = new SystemController(this);
     setQmlContextProperty("SystemController", m_systemController);

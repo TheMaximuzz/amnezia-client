@@ -4399,6 +4399,22 @@ Create one from the current settings.</source>
         <source>Blocks network connections without VPN</source>
         <translation>Блокирует интернет-соединение без VPN</translation>
     </message>
+    <message>
+        <source>Split tunneling</source>
+        <translation>Раздельное туннелирование</translation>
+    </message>
+    <message>
+        <source>Choose which apps and addresses bypass the VPN</source>
+        <translation>Выберите, какие приложения и адреса идут мимо VPN</translation>
+    </message>
+    <message>
+        <source>Local interface</source>
+        <translation>Локальный интерфейс</translation>
+    </message>
+    <message>
+        <source>Address, keys, MTU, scripts and local traffic</source>
+        <translation>Адрес, ключи, MTU, скрипты и локальный трафик</translation>
+    </message>
 </context>
 <context>
     <name>PageSettingsDns</name>
@@ -7634,6 +7650,284 @@ Remove the server from the app to continue.</source>
         <location filename="../ui/qml/main2.qml" line="287"/>
         <source>Cannot remove server during active connection</source>
         <translation>Невозможно удалить сервер во время активного соединения</translation>
+    </message>
+</context>
+<context>
+    <name>SplitTunnelingListSection</name>
+    <message>
+        <source>Add folder</source>
+        <translation>Добавить папку</translation>
+    </message>
+    <message>
+        <source>Add program file</source>
+        <translation>Добавить файл программы</translation>
+    </message>
+    <message>
+        <source>Choose a running process</source>
+        <translation>Выбрать запущенный процесс</translation>
+    </message>
+    <message>
+        <source>Move down</source>
+        <translation>Вниз</translation>
+    </message>
+    <message>
+        <source>Move up</source>
+        <translation>Вверх</translation>
+    </message>
+    <message>
+        <source>Remove selected</source>
+        <translation>Удалить выбранное</translation>
+    </message>
+</context>
+<context>
+    <name>ProcessPickerDrawer</name>
+    <message>
+        <source>All programs in this folder and its subfolders will bypass the VPN, including ones that appear after updates</source>
+        <translation>Все программы в этой папке и её подпапках пойдут мимо VPN, включая появившиеся после обновлений</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Choose a process</source>
+        <translation>Выбрать процесс</translation>
+    </message>
+    <message>
+        <source>Choose process</source>
+        <translation>Выбрать процесс</translation>
+    </message>
+    <message>
+        <source>Exclude the whole folder of the process</source>
+        <translation>Исключать всю папку процесса</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Фильтр</translation>
+    </message>
+    <message>
+        <source>No processes found</source>
+        <translation>Процессы не найдены</translation>
+    </message>
+    <message>
+        <source>Process file path</source>
+        <translation>Путь к файлу процесса</translation>
+    </message>
+    <message>
+        <source>Process name</source>
+        <translation>Имя процесса</translation>
+    </message>
+    <message>
+        <source>Show processes of all users</source>
+        <translation>Показать процессы всех пользователей</translation>
+    </message>
+    <message>
+        <source>The selected program will not use the VPN</source>
+        <translation>Выбранная программа не будет использовать VPN</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation>Пользователь</translation>
+    </message>
+</context>
+<context>
+    <name>PageSettingsWindowsSplitTunneling</name>
+    <message>
+        <source>Address, network or domain</source>
+        <translation>Адрес, сеть или домен</translation>
+    </message>
+    <message>
+        <source>Apps outside the tunnel</source>
+        <translation>Приложения вне туннеля</translation>
+    </message>
+    <message>
+        <source>Cannot change split tunneling settings during active connection</source>
+        <translation>Нельзя менять настройки раздельного туннелирования во время активного подключения</translation>
+    </message>
+    <message>
+        <source>Choose which traffic goes through the VPN and which goes directly to the Internet</source>
+        <translation>Выберите, какой трафик идёт через VPN, а какой напрямую в интернет</translation>
+    </message>
+    <message>
+        <source>Default server does not support split tunneling function</source>
+        <translation>Сервер по умолчанию не поддерживает раздельное туннелирование</translation>
+    </message>
+    <message>
+        <source>Executable files (*.exe)</source>
+        <translation>Исполняемые файлы (*.exe)</translation>
+    </message>
+    <message>
+        <source>Networks and addresses outside the tunnel</source>
+        <translation>Сети и адреса вне туннеля</translation>
+    </message>
+    <message>
+        <source>No filters</source>
+        <translation>Нет фильтров</translation>
+    </message>
+    <message>
+        <source>Open executable file</source>
+        <translation>Открыть исполняемый файл</translation>
+    </message>
+    <message>
+        <source>Path to a program or folder</source>
+        <translation>Путь к программе или папке</translation>
+    </message>
+    <message>
+        <source>Russian addresses directly</source>
+        <translation>Российские адреса напрямую</translation>
+    </message>
+    <message>
+        <source>Select a folder to exclude from VPN</source>
+        <translation>Выберите папку для исключения из VPN</translation>
+    </message>
+    <message>
+        <source>Split tunneling</source>
+        <translation>Раздельное туннелирование</translation>
+    </message>
+    <message>
+        <source>These programs and everything they start bypass the VPN</source>
+        <translation>Эти программы и всё, что они запускают, идут мимо VPN</translation>
+    </message>
+    <message>
+        <source>Traffic to these addresses goes directly to the Internet</source>
+        <translation>Трафик к этим адресам идёт напрямую в интернет</translation>
+    </message>
+    <message>
+        <source>Tunneled networks and addresses</source>
+        <translation>Туннелируемые сети/адреса</translation>
+    </message>
+    <message>
+        <source>Update the list of Russian addresses now</source>
+        <translation>Обновить список российских адресов сейчас</translation>
+    </message>
+    <message>
+        <source>When the list is empty, all traffic goes through the VPN</source>
+        <translation>Пока список пуст, весь трафик идёт через VPN</translation>
+    </message>
+</context>
+<context>
+    <name>PageSettingsLocalInterface</name>
+    <message>
+        <source>A new key stops the connection until the server knows its public key</source>
+        <translation>С новым ключом подключение не заработает, пока сервер не узнает его публичный ключ</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Адрес</translation>
+    </message>
+    <message>
+        <source>Address, keys and MTU are available when the default server uses AmneziaWG or WireGuard</source>
+        <translation>Адрес, ключи и MTU доступны, если сервер по умолчанию использует AmneziaWG или WireGuard</translation>
+    </message>
+    <message>
+        <source>Allow local traffic</source>
+        <translation>Разрешить локальный трафик</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation>Автоматически</translation>
+    </message>
+    <message>
+        <source>Commands run with your user rights</source>
+        <translation>Команды запускаются с правами вашего пользователя</translation>
+    </message>
+    <message>
+        <source>Copied</source>
+        <translation>Скопировано</translation>
+    </message>
+    <message>
+        <source>Create</source>
+        <translation>Создать</translation>
+    </message>
+    <message>
+        <source>DNS</source>
+        <translation>DNS</translation>
+    </message>
+    <message>
+        <source>Devices in your local network stay reachable while the VPN is on</source>
+        <translation>Устройства в локальной сети остаются доступны при включённом VPN</translation>
+    </message>
+    <message>
+        <source>Listen port (ListenPort)</source>
+        <translation>Входящий порт (ListenPort)</translation>
+    </message>
+    <message>
+        <source>Local interface</source>
+        <translation>Локальный интерфейс</translation>
+    </message>
+    <message>
+        <source>MTU</source>
+        <translation>MTU</translation>
+    </message>
+    <message>
+        <source>Private key (PrivateKey)</source>
+        <translation>Закрытый ключ (PrivateKey)</translation>
+    </message>
+    <message>
+        <source>Public key derived from the private key</source>
+        <translation>Открытый ключ, полученный из закрытого</translation>
+    </message>
+    <message>
+        <source>Run after connecting</source>
+        <translation>Запускать после установки соединения</translation>
+    </message>
+    <message>
+        <source>Run after disconnecting</source>
+        <translation>Запускать после закрытия соединения</translation>
+    </message>
+    <message>
+        <source>Run before connecting</source>
+        <translation>Запускать перед установкой соединения</translation>
+    </message>
+    <message>
+        <source>Run before disconnecting</source>
+        <translation>Запускать перед закрытием соединения</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <source>Script timeout, seconds</source>
+        <translation>Таймаут выполнения скрипта, секунд</translation>
+    </message>
+    <message>
+        <source>Scripts</source>
+        <translation>Скрипты</translation>
+    </message>
+    <message>
+        <source>Unable change settings while there is an active connection</source>
+        <translation>Нельзя изменить настройки во время активного подключения</translation>
+    </message>
+    <message>
+        <source>Used when AmneziaDNS is turned off</source>
+        <translation>Используется, когда AmneziaDNS выключен</translation>
+    </message>
+</context>
+<context>
+    <name>WindowsSplitTunnelingUiController</name>
+    <message>
+        <source>A Windows system folder can't be excluded as a whole, only this program was added</source>
+        <translation>Системную папку Windows нельзя исключить целиком, добавлена только эта программа</translation>
+    </message>
+    <message>
+        <source>Added: %1</source>
+        <translation>Добавлено: %1</translation>
+    </message>
+    <message>
+        <source>Enter a valid address, network or domain that is not in the list yet</source>
+        <translation>Введите корректный адрес, сеть или домен, которого ещё нет в списке</translation>
+    </message>
+    <message>
+        <source>The application has already been added</source>
+        <translation>Это приложение уже добавлено</translation>
+    </message>
+</context>
+<context>
+    <name>LocalInterfaceUiController</name>
+    <message>
+        <source>Settings updated successfully</source>
+        <translation>Настройки успешно обновлены</translation>
     </message>
 </context>
 </TS>

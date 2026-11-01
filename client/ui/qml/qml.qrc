@@ -22,6 +22,8 @@
         <file>Components/HomeInfoButton.qml</file>
         <file>Components/HomeSplitTunnelingDrawer.qml</file>
         <file>Components/InstalledAppsDrawer.qml</file>
+        <file>Components/ProcessPickerDrawer.qml</file>
+        <file>Components/SplitTunnelingListSection.qml</file>
         <file>Components/QuestionDrawer.qml</file>
         <file>Components/SelectLanguageDrawer.qml</file>
         <file>Components/ServersListView.qml</file>
@@ -53,6 +55,7 @@
         <file>Controls2/DialogButtonType.qml</file>
         <file>Controls2/ChangelogSectionType.qml</file>
         <file>Controls2/BackdropBlurType.qml</file>
+        <file>Controls2/GlassBackgroundType.qml</file>
         <file>Controls2/RadioIndicatorType.qml</file>
         <file>Controls2/StatusBadgeType.qml</file>
         <file>Controls2/BasicCardType.qml</file>
@@ -157,6 +160,8 @@
         <file>Pages2/PageSettingsServerServices.qml</file>
         <file>Pages2/PageSettingsServersList.qml</file>
         <file>Pages2/PageSettingsSplitTunneling.qml</file>
+        <file>Pages2/PageSettingsWindowsSplitTunneling.qml</file>
+        <file>Pages2/PageSettingsLocalInterface.qml</file>
         <file>Pages2/PageSettingsNewsNotifications.qml</file>
         <file>Pages2/PageSettingsNewsDetail.qml</file>
         <file>Pages2/PageUpdate.qml</file>

@@ -55,6 +55,15 @@ public:
     QDateTime ruSubnetsUpdatedAt() const;
     void setRuSubnets(const QStringList &subnets, const QDateTime &updatedAt);
 
+    int listenPort() const;
+    void setListenPort(int port);
+    QString connectionScript(const QString &stage) const;
+    void setConnectionScript(const QString &stage, const QString &command);
+    int connectionScriptTimeout() const;
+    void setConnectionScriptTimeout(int seconds);
+    bool isLocalTrafficAllowed() const;
+    void setLocalTrafficAllowed(bool allowed);
+
     AppsRouteMode appsRouteMode() const;
     void setAppsRouteMode(AppsRouteMode mode);
     void setVpnApps(AppsRouteMode mode, const QVector<InstalledAppInfo> &apps);

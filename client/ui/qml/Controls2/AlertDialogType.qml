@@ -50,7 +50,7 @@ Popup {
 
     background: Rectangle {
         radius: 16
-        color: AmneziaStyle.color.bgSurfaceAlt
+        color: AmneziaStyle.color.bgSheet
     }
 
     contentItem: ColumnLayout {

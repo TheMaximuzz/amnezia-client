@@ -90,12 +90,14 @@ PageType {
 
                     Layout.fillWidth: true
 
-                    text: qsTr("Site-based split tunneling")
-                    subtitle: qsTr("Allows you to select which sites you want to access through the VPN")
+                    text: Qt.platform.os === "windows" ? qsTr("Split tunneling") : qsTr("Site-based split tunneling")
+                    subtitle: Qt.platform.os === "windows" ? qsTr("Choose which apps and addresses bypass the VPN")
+                                                           : qsTr("Allows you to select which sites you want to access through the VPN")
                     trailingIconSource: "qrc:/images/controls/chevron-right.svg"
 
                     onClicked: {
-                        PageController.goToPage(PageEnum.PageSettingsSplitTunneling)
+                        PageController.goToPage(Qt.platform.os === "windows" ? PageEnum.PageSettingsWindowsSplitTunneling
+                                                                             : PageEnum.PageSettingsSplitTunneling)
                     }
                 }
 
@@ -104,7 +106,7 @@ PageType {
 
                     Layout.fillWidth: true
 
-                    visible: root.isAppSplitTinnelingEnabled
+                    visible: root.isAppSplitTinnelingEnabled && Qt.platform.os !== "windows"
 
                     text: qsTr("App-based split tunneling")
                     subtitle: qsTr("Allows you to use the VPN only for certain Apps")
@@ -112,6 +114,20 @@ PageType {
 
                     onClicked: {
                         PageController.goToPage(PageEnum.PageSettingsAppSplitTunneling)
+                    }
+                }
+
+                ListItemType {
+                    Layout.fillWidth: true
+
+                    visible: !GC.isMobile()
+
+                    text: qsTr("Local interface")
+                    subtitle: qsTr("Address, keys, MTU, scripts and local traffic")
+                    trailingIconSource: "qrc:/images/controls/chevron-right.svg"
+
+                    onClicked: {
+                        PageController.goToPage(PageEnum.PageSettingsLocalInterface)
                     }
                 }
 

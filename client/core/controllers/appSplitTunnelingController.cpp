@@ -35,6 +35,16 @@ void AppSplitTunnelingController::removeApp(int index)
     m_appSettingsRepository->setVpnApps(m_currentRouteMode, m_apps);
 }
 
+void AppSplitTunnelingController::moveApp(int from, int to)
+{
+    if (from < 0 || from >= m_apps.size() || to < 0 || to >= m_apps.size() || from == to) {
+        return;
+    }
+
+    m_apps.move(from, to);
+    m_appSettingsRepository->setVpnApps(m_currentRouteMode, m_apps);
+}
+
 void AppSplitTunnelingController::clearAppsList()
 {
     m_apps.clear();

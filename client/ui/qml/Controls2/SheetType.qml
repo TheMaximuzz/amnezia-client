@@ -16,7 +16,7 @@ Popup {
     readonly property real openedY: bottomY - Math.min(expandedHeight + contentTopOffset, bottomY)
     readonly property real progress: closedY > openedY ? Math.max(0, Math.min(1, (closedY - sheet.y) / (closedY - openedY))) : 0
 
-    property color defaultColor: AmneziaStyle.color.bgSurfaceAlt
+    property color defaultColor: AmneziaStyle.color.bgSheet
     property color borderColor: AmneziaStyle.color.borderFaint
     property bool showGrabber: true
     property real grabberTopMargin: 8

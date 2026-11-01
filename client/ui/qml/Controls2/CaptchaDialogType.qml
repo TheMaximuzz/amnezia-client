@@ -91,7 +91,7 @@ Popup {
 
             topLeftRadius: 16
             topRightRadius: 16
-            color: AmneziaStyle.color.bgSurfaceAlt
+            color: AmneziaStyle.color.bgSheet
             border.color: AmneziaStyle.color.borderFaint
             border.width: 1
         }

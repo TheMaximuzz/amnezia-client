@@ -38,6 +38,11 @@ public:
     bool isSplitTunnelingEnabled() const;
     QVector<QPair<QString, QStringList>> getCurrentSites() const;
 
+    bool addSiteToMode(RouteMode mode, const QString &hostname);
+    void removeSiteFromMode(RouteMode mode, const QString &hostname);
+    QVector<QPair<QString, QStringList>> sitesForMode(RouteMode mode) const;
+    void applyForwardAndExceptLists();
+
     bool importSitesFromJson(const QByteArray& jsonData, bool replaceExisting, QString &errorMessage);
     QByteArray exportSitesToJson() const;
 
@@ -61,8 +66,8 @@ private slots:
 private:
     void fillSites();
     bool addSiteInternal(const QString &hostname, const QStringList &ips);
-    QString normalizeHostname(const QString &hostname) const;
-    bool validateHostname(const QString &hostname) const;
+    static QString normalizeHostname(const QString &hostname);
+    static bool validateHostname(const QString &hostname);
     void processSiteAfterResolve(const QString &hostname, const QStringList &ips);
     void processSite(const QString &hostname, const QStringList &ips);
     void updateRuSubnetsIfStale();

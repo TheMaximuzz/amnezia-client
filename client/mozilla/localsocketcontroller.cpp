@@ -155,6 +155,7 @@ void LocalSocketController::activate(const QJsonObject &rawConfig) {
   json.insert("serverIpv4AddrIn", wgConfig.value(amnezia::configKey::hostName));
   //  json.insert("serverIpv6AddrIn", QJsonValue(hop.m_server.ipv6AddrIn()));
   json.insert("deviceMTU", wgConfig.value(amnezia::configKey::mtu));
+  json.insert("listenPort", rawConfig.value(amnezia::configKey::listenPort).toInt());
 
   json.insert("serverPort", wgConfig.value(amnezia::configKey::port).toInt());
   json.insert("serverIpv4Gateway", wgConfig.value(amnezia::configKey::hostName));
@@ -242,6 +243,9 @@ void LocalSocketController::activate(const QJsonObject &rawConfig) {
           QString ipRange = v.toString();
           jsExcludedAddresses.append(ipRange);
       }
+  }
+  for (const auto &excludedSite : rawConfig.value(amnezia::configKey::splitTunnelExcludedSites).toArray()) {
+    jsExcludedAddresses.append(excludedSite.toString());
   }
 
   json.insert("excludedAddresses", jsExcludedAddresses);

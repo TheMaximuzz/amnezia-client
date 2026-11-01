@@ -53,6 +53,12 @@ AbstractButton {
             radius: 16
             color: root.muted ? AmneziaStyle.color.bgSurfaceAlt : AmneziaStyle.color.bgSurface
             opacity: root.muted ? 0.75 : 1.0
+            border.width: 1
+            border.color: root.hovered && root.enabled && !root.muted ? AmneziaStyle.color.borderAccent : AmneziaStyle.color.borderFaint
+
+            Behavior on border.color {
+                ColorAnimation { duration: 150 }
+            }
         }
 
         Rectangle {

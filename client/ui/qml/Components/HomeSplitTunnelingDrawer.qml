@@ -58,19 +58,22 @@ SheetType {
             Layout.leftMargin: 16
             Layout.rightMargin: 16
 
-            text: qsTr("Site-based split tunneling")
-            subtitle: enabled && IpSplitTunnelingController.isSplitTunnelingEnabled ? qsTr("Enabled") : qsTr("Disabled")
+            text: Qt.platform.os === "windows" ? qsTr("Split tunneling") : qsTr("Site-based split tunneling")
+            subtitle: enabled && (IpSplitTunnelingController.isSplitTunnelingEnabled
+                                  || (Qt.platform.os === "windows" && AppSplitTunnelingController.isSplitTunnelingEnabled))
+                      ? qsTr("Enabled") : qsTr("Disabled")
             trailingIconSource: "qrc:/images/controls/chevron-right.svg"
 
             onClicked: {
                 root.close()
-                PageController.goToPage(PageEnum.PageSettingsSplitTunneling)
+                PageController.goToPage(Qt.platform.os === "windows" ? PageEnum.PageSettingsWindowsSplitTunneling
+                                                                     : PageEnum.PageSettingsSplitTunneling)
             }
         }
 
         ListItemType {
             id: appSplitTunnelingSwitch
-            visible: isAppSplitTinnelingEnabled
+            visible: isAppSplitTinnelingEnabled && Qt.platform.os !== "windows"
 
             Layout.fillWidth: true
             Layout.leftMargin: 16

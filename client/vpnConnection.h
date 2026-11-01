@@ -73,6 +73,8 @@ protected:
     QSharedPointer<VpnProtocol> m_vpnProtocol;
 
 private:
+    void runConnectionScript(const QString &stage, bool waitForFinish) const;
+    QStringList siteSubnets(amnezia::RouteMode mode) const;
     QStringList ruBypassSubnets(amnezia::RouteMode mode) const;
 
     SecureServersRepository* m_serversRepository;
