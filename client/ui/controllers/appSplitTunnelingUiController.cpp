@@ -31,6 +31,11 @@ void AppSplitTunnelingUiController::addApp(const QString &appPath)
     }
 }
 
+void AppSplitTunnelingUiController::addAppFolder(const QUrl &folderUrl)
+{
+    addApp(folderUrl.toLocalFile());
+}
+
 void AppSplitTunnelingUiController::addApps(QVector<QPair<QString, QString>> apps)
 {
     for (const auto &app : apps) {

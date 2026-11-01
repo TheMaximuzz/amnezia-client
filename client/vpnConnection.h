@@ -73,6 +73,8 @@ protected:
     QSharedPointer<VpnProtocol> m_vpnProtocol;
 
 private:
+    QStringList ruBypassSubnets(amnezia::RouteMode mode) const;
+
     SecureServersRepository* m_serversRepository;
     SecureAppSettingsRepository* m_appSettingsRepository;
 

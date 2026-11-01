@@ -49,6 +49,11 @@ public:
     static QStringList siteIpList(const QVariant &value);
     bool isSitesSplitTunnelingEnabled() const;
     void setSitesSplitTunnelingEnabled(bool enabled);
+    bool isRuSubnetsBypassEnabled() const;
+    void setRuSubnetsBypassEnabled(bool enabled);
+    QStringList ruSubnets() const;
+    QDateTime ruSubnetsUpdatedAt() const;
+    void setRuSubnets(const QStringList &subnets, const QDateTime &updatedAt);
 
     AppsRouteMode appsRouteMode() const;
     void setAppsRouteMode(AppsRouteMode mode);

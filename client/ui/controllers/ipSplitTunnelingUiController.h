@@ -12,6 +12,9 @@ class IpSplitTunnelingUiController : public QObject
 
     Q_PROPERTY(int routeMode READ getRouteMode WRITE setRouteMode NOTIFY routeModeChanged)
     Q_PROPERTY(bool isSplitTunnelingEnabled READ isSplitTunnelingEnabled NOTIFY isSplitTunnelingEnabledChanged)
+    Q_PROPERTY(bool isRuSubnetsBypassEnabled READ isRuSubnetsBypassEnabled NOTIFY ruSubnetsStateChanged)
+    Q_PROPERTY(bool isRuSubnetsUpdating READ isRuSubnetsUpdating NOTIFY ruSubnetsStateChanged)
+    Q_PROPERTY(QString ruSubnetsStatus READ ruSubnetsStatus NOTIFY ruSubnetsStateChanged)
 
 public:
     explicit IpSplitTunnelingUiController(IpSplitTunnelingController* ipSplitTunnelingController,
@@ -25,15 +28,21 @@ public slots:
     void exportSites(const QString &fileName);
     void toggleSplitTunneling(bool enabled);
     void setRouteMode(int routeMode);
+    void toggleRuSubnetsBypass(bool enabled);
+    void updateRuSubnets();
 
     int getRouteMode() const;
     bool isSplitTunnelingEnabled() const;
+    bool isRuSubnetsBypassEnabled() const;
+    bool isRuSubnetsUpdating() const;
+    QString ruSubnetsStatus() const;
 
     void updateModel();
 
 signals:
     void routeModeChanged();
     void isSplitTunnelingEnabledChanged();
+    void ruSubnetsStateChanged();
     void errorOccurred(const QString &errorMessage);
     void finished(const QString &message);
     void saveFile(const QString &fileName, const QString &data);

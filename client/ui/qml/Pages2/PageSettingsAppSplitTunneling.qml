@@ -219,21 +219,37 @@ PageType {
 
             clickedFunc: function() {
                 searchField.focus = false
-                PageController.showBusyIndicator(true)
 
                 if (Qt.platform.os === "windows") {
-                    var fileName = SystemController.getFileName(qsTr("Open executable file"),
-                                                                qsTr("Executable files (*.*)"))
-                    if (fileName !== "") {
-                        AppSplitTunnelingController.addApp(fileName)
-                    }
+                    Dialogs.askQuestion(qsTr("What to exclude from VPN?"),
+                                        qsTr("A folder excludes every program inside it, including programs that appear there after updates. Programs started by an excluded program are excluded too."),
+                                        qsTr("Folder"),
+                                        qsTr("Program file"),
+                                        function() { appFolderDialog.open() },
+                                        root.addExecutableFile)
                 } else if (Qt.platform.os === "android"){
                     installedAppDrawer.open()
                 }
-
-                PageController.showBusyIndicator(false)
             }
         }
+    }
+
+    function addExecutableFile() {
+        PageController.showBusyIndicator(true)
+        var fileName = SystemController.getFileName(qsTr("Open executable file"),
+                                                    qsTr("Executable files (*.*)"))
+        if (fileName !== "") {
+            AppSplitTunnelingController.addApp(fileName)
+        }
+        PageController.showBusyIndicator(false)
+    }
+
+    FolderDialog {
+        id: appFolderDialog
+
+        title: qsTr("Select a folder to exclude from VPN")
+
+        onAccepted: AppSplitTunnelingController.addAppFolder(appFolderDialog.selectedFolder)
     }
 
     InstalledAppsDrawer {

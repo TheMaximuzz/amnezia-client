@@ -678,6 +678,14 @@ Already installed containers were found on the server. All installed containers 
         <source>The JSON data is not an array</source>
         <translation>Данные в формате JSON не являются массивом</translation>
     </message>
+    <message>
+        <source>Failed to download the list of Russian addresses: %1</source>
+        <translation>Не удалось скачать список российских адресов: %1</translation>
+    </message>
+    <message>
+        <source>The downloaded list of Russian addresses is invalid</source>
+        <translation>Скачанный список российских адресов некорректен</translation>
+    </message>
 </context>
 <context>
     <name>IpSplitTunnelingUiController</name>
@@ -710,6 +718,18 @@ Already installed containers were found on the server. All installed containers 
         <location filename="../ui/controllers/ipSplitTunnelingUiController.cpp" line="64"/>
         <source>Export completed</source>
         <translation>Экспорт завершен</translation>
+    </message>
+    <message>
+        <source>Updating the list...</source>
+        <translation>Список обновляется...</translation>
+    </message>
+    <message>
+        <source>The list has not been downloaded yet</source>
+        <translation>Список ещё не скачан</translation>
+    </message>
+    <message>
+        <source>%1 networks, updated %2, refreshed weekly</source>
+        <translation>Сетей: %1, обновлено %2, обновляется раз в неделю</translation>
     </message>
 </context>
 <context>
@@ -4099,6 +4119,26 @@ Create one from the current settings.</source>
         <source>Executable files (*.*)</source>
         <translation>Исполняемые файлы (*.*)</translation>
     </message>
+    <message>
+        <source>What to exclude from VPN?</source>
+        <translation>Что исключить из VPN?</translation>
+    </message>
+    <message>
+        <source>A folder excludes every program inside it, including programs that appear there after updates. Programs started by an excluded program are excluded too.</source>
+        <translation>Папка исключает все программы внутри неё, включая появившиеся после обновлений. Программы, запущенные исключённой программой, тоже исключаются.</translation>
+    </message>
+    <message>
+        <source>Folder</source>
+        <translation>Папку</translation>
+    </message>
+    <message>
+        <source>Program file</source>
+        <translation>Файл программы</translation>
+    </message>
+    <message>
+        <source>Select a folder to exclude from VPN</source>
+        <translation>Выберите папку для исключения из VPN</translation>
+    </message>
 </context>
 <context>
     <name>PageSettingsApplication</name>
@@ -5153,6 +5193,14 @@ Only one can be active at a time: VPN or local proxy</source>
         <location filename="../ui/qml/Pages2/PageSettingsSplitTunneling.qml" line="218"/>
         <source>Add imported sites to existing ones</source>
         <translation>Добавить импортированные сайты к существующим</translation>
+    </message>
+    <message>
+        <source>Russian addresses directly</source>
+        <translation>Российские адреса напрямую</translation>
+    </message>
+    <message>
+        <source>Update the list of Russian addresses now</source>
+        <translation>Обновить список российских адресов сейчас</translation>
     </message>
 </context>
 <context>

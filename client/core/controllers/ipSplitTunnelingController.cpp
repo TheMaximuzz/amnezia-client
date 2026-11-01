@@ -2,6 +2,19 @@
 #include "core/utils/networkUtilities.h"
 #include <QJsonObject>
 #include <QDebug>
+#include <QHostAddress>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+
+namespace
+{
+    const QUrl ruSubnetsUrl("https://www.ipdeny.com/ipblocks/data/aggregated/ru-aggregated.zone");
+    constexpr int ruSubnetsMaxAgeDays = 7;
+    constexpr int ruSubnetsCheckIntervalMs = 60 * 60 * 1000;
+    constexpr int ruSubnetsRequestTimeoutMs = 30000;
+    constexpr int ruSubnetsMinPrefixLength = 8;
+    constexpr int ruSubnetsMinCount = 100;
+}
 
 IpSplitTunnelingController::IpSplitTunnelingController(SecureAppSettingsRepository* appSettingsRepository, QObject* parent)
     : QObject(parent),
@@ -13,6 +26,110 @@ IpSplitTunnelingController::IpSplitTunnelingController(SecureAppSettingsReposito
         m_currentRouteMode = RouteMode::VpnOnlyForwardSites;
     }
     fillSites();
+
+    m_ruSubnetsCheckTimer.setInterval(ruSubnetsCheckIntervalMs);
+    connect(&m_ruSubnetsCheckTimer, &QTimer::timeout, this, &IpSplitTunnelingController::updateRuSubnetsIfStale);
+    m_ruSubnetsCheckTimer.start();
+    QTimer::singleShot(0, this, &IpSplitTunnelingController::updateRuSubnetsIfStale);
+}
+
+bool IpSplitTunnelingController::isRuSubnetsBypassEnabled() const
+{
+    return m_appSettingsRepository->isRuSubnetsBypassEnabled();
+}
+
+void IpSplitTunnelingController::setRuSubnetsBypassEnabled(bool enabled)
+{
+    m_appSettingsRepository->setRuSubnetsBypassEnabled(enabled);
+    if (enabled) {
+        updateRuSubnetsIfStale();
+    }
+}
+
+int IpSplitTunnelingController::ruSubnetsCount() const
+{
+    return m_appSettingsRepository->ruSubnets().size();
+}
+
+QDateTime IpSplitTunnelingController::ruSubnetsUpdatedAt() const
+{
+    return m_appSettingsRepository->ruSubnetsUpdatedAt();
+}
+
+bool IpSplitTunnelingController::isRuSubnetsUpdating() const
+{
+    return m_ruSubnetsUpdating;
+}
+
+void IpSplitTunnelingController::updateRuSubnetsIfStale()
+{
+    if (!m_appSettingsRepository->isRuSubnetsBypassEnabled()) {
+        return;
+    }
+
+    const QDateTime updatedAt = m_appSettingsRepository->ruSubnetsUpdatedAt();
+    const bool isStale = !updatedAt.isValid() || updatedAt.addDays(ruSubnetsMaxAgeDays) <= QDateTime::currentDateTimeUtc();
+    if (isStale || m_appSettingsRepository->ruSubnets().isEmpty()) {
+        updateRuSubnets();
+    }
+}
+
+void IpSplitTunnelingController::updateRuSubnets()
+{
+    if (m_ruSubnetsUpdating) {
+        return;
+    }
+    m_ruSubnetsUpdating = true;
+    emit ruSubnetsUpdateStarted();
+
+    QNetworkRequest request(ruSubnetsUrl);
+    request.setTransferTimeout(ruSubnetsRequestTimeoutMs);
+    QNetworkReply *reply = m_networkManager.get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        reply->deleteLater();
+        m_ruSubnetsUpdating = false;
+
+        if (reply->error() != QNetworkReply::NoError) {
+            qWarning() << "[SplitTunneling] RU subnets download failed:" << reply->errorString();
+            emit ruSubnetsUpdateFailed(tr("Failed to download the list of Russian addresses: %1").arg(reply->errorString()));
+            return;
+        }
+
+        const QStringList subnets = parseRuSubnets(reply->readAll());
+        if (subnets.size() < ruSubnetsMinCount) {
+            qWarning() << "[SplitTunneling] RU subnets list rejected, entries:" << subnets.size();
+            emit ruSubnetsUpdateFailed(tr("The downloaded list of Russian addresses is invalid"));
+            return;
+        }
+
+        m_appSettingsRepository->setRuSubnets(subnets, QDateTime::currentDateTimeUtc());
+        qDebug() << "[SplitTunneling] RU subnets updated, entries:" << subnets.size();
+        emit ruSubnetsUpdated();
+    });
+}
+
+QStringList IpSplitTunnelingController::parseRuSubnets(const QByteArray &data)
+{
+    QStringList subnets;
+    const QList<QByteArray> lines = data.split('\n');
+    for (const QByteArray &rawLine : lines) {
+        const QString line = QString::fromLatin1(rawLine).section('#', 0, 0).trimmed();
+        if (line.isEmpty()) {
+            continue;
+        }
+
+        const QPair<QHostAddress, int> subnet = QHostAddress::parseSubnet(line.contains('/') ? line : line + "/32");
+        if (subnet.first.protocol() != QAbstractSocket::IPv4Protocol || subnet.second < ruSubnetsMinPrefixLength) {
+            continue;
+        }
+
+        const quint32 mask = subnet.second == 0 ? 0 : ~quint32(0) << (32 - subnet.second);
+        const QString network = QHostAddress(subnet.first.toIPv4Address() & mask).toString();
+        subnets.append(QString("%1/%2").arg(network).arg(subnet.second));
+    }
+    subnets.removeDuplicates();
+    return subnets;
 }
 
 bool IpSplitTunnelingController::addSiteInternal(const QString &hostname, const QStringList &ips)

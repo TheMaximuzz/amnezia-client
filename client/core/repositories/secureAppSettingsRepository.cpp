@@ -208,6 +208,32 @@ void SecureAppSettingsRepository::setSitesSplitTunnelingEnabled(bool enabled)
     emit sitesSplitTunnelingEnabledChanged(enabled);
 }
 
+bool SecureAppSettingsRepository::isRuSubnetsBypassEnabled() const
+{
+    return value("Conf/ruSubnetsBypassEnabled", false).toBool();
+}
+
+void SecureAppSettingsRepository::setRuSubnetsBypassEnabled(bool enabled)
+{
+    setValue("Conf/ruSubnetsBypassEnabled", enabled);
+}
+
+QStringList SecureAppSettingsRepository::ruSubnets() const
+{
+    return value("Conf/ruSubnets").toStringList();
+}
+
+QDateTime SecureAppSettingsRepository::ruSubnetsUpdatedAt() const
+{
+    return value("Conf/ruSubnetsUpdatedAt").toDateTime();
+}
+
+void SecureAppSettingsRepository::setRuSubnets(const QStringList &subnets, const QDateTime &updatedAt)
+{
+    setValue("Conf/ruSubnets", subnets);
+    setValue("Conf/ruSubnetsUpdatedAt", updatedAt);
+}
+
 namespace {
     QString appsRouteModeString(AppsRouteMode mode) {
         switch (mode) {

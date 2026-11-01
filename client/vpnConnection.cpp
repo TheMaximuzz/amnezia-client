@@ -1,8 +1,10 @@
 #include "vpnConnection.h"
 
 #include <QDebug>
+#include <QDirIterator>
 #include <QEventLoop>
 #include <QFile>
+#include <QFileInfo>
 #include <QHostInfo>
 #include <QJsonObject>
 #include <QObject>
@@ -205,6 +207,14 @@ void VpnConnection::setRepositories(SecureServersRepository* serversRepository, 
     m_appSettingsRepository = appSettingsRepository;
 }
 
+QStringList VpnConnection::ruBypassSubnets(amnezia::RouteMode mode) const
+{
+    if (mode != amnezia::RouteMode::VpnAllExceptSites || !m_appSettingsRepository->isRuSubnetsBypassEnabled()) {
+        return {};
+    }
+    return m_appSettingsRepository->ruSubnets();
+}
+
 void VpnConnection::addSitesRoutes(const QString &gw, amnezia::RouteMode mode)
 {
 #ifdef AMNEZIA_DESKTOP
@@ -229,6 +239,7 @@ void VpnConnection::addSitesRoutes(const QString &gw, amnezia::RouteMode mode)
             sites.append(i.key());
         }
     }
+    ips += ruBypassSubnets(mode);
     ips.removeDuplicates();
 
     IpcClient::withInterface([&](QSharedPointer<IpcInterfaceReplica> iface) {
@@ -479,6 +490,7 @@ void VpnConnection::appendSplitTunnelingConfig()
                     }
                 }
             }
+            sites += ruBypassSubnets(routeMode);
             sites.removeDuplicates();
             for (const auto &site : sites) {
                 sitesJsonArray.append(site);
@@ -504,7 +516,16 @@ void VpnConnection::appendSplitTunnelingConfig()
 
         auto apps = m_appSettingsRepository->vpnApps(appsRouteMode);
         for (const auto &app : apps) {
-            appsJsonArray.append(app.appPath.isEmpty() ? app.packageName : app.appPath);
+            if (app.appPath.isEmpty()) {
+                appsJsonArray.append(app.packageName);
+            } else if (QFileInfo(app.appPath).isDir()) {
+                QDirIterator executables(app.appPath, { "*.exe" }, QDir::Files, QDirIterator::Subdirectories);
+                while (executables.hasNext()) {
+                    appsJsonArray.append(executables.next());
+                }
+            } else {
+                appsJsonArray.append(app.appPath);
+            }
         }
 
         if (appsJsonArray.isEmpty()) {
