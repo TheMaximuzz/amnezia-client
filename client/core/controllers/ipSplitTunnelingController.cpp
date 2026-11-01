@@ -17,6 +17,8 @@ namespace
     constexpr int ruSubnetsRequestTimeoutMs = 30000;
     constexpr int ruSubnetsMinPrefixLength = 8;
     constexpr int ruSubnetsMinCount = 100;
+    constexpr int ruSubnetsMaxCount = 20000;
+    constexpr qint64 ruSubnetsMaxResponseBytes = 16 * 1024 * 1024;
 }
 
 IpSplitTunnelingController::IpSplitTunnelingController(SecureAppSettingsRepository* appSettingsRepository, QObject* parent)
@@ -97,7 +99,14 @@ void IpSplitTunnelingController::downloadRuSubnets(int sourceIndex, const QStrin
 
     QNetworkRequest request(ruSubnetsUrls.at(sourceIndex));
     request.setTransferTimeout(ruSubnetsRequestTimeoutMs);
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::SameOriginRedirectPolicy);
     QNetworkReply *reply = m_networkManager.get(request);
+
+    connect(reply, &QNetworkReply::downloadProgress, reply, [reply](qint64 bytesReceived, qint64 bytesTotal) {
+        if (bytesReceived > ruSubnetsMaxResponseBytes || bytesTotal > ruSubnetsMaxResponseBytes) {
+            reply->abort();
+        }
+    });
 
     connect(reply, &QNetworkReply::finished, this, [this, reply, sourceIndex, errors]() {
         reply->deleteLater();
@@ -109,7 +118,14 @@ void IpSplitTunnelingController::downloadRuSubnets(int sourceIndex, const QStrin
             return;
         }
 
-        const QStringList subnets = parseRuSubnets(reply->readAll());
+        const QByteArray payload = reply->readAll();
+        if (payload.size() > ruSubnetsMaxResponseBytes) {
+            qWarning() << "[SplitTunneling] RU subnets response too large:" << host << "bytes:" << payload.size();
+            downloadRuSubnets(sourceIndex + 1, errors + QStringList { QString("%1: %2").arg(host, tr("list too large")) });
+            return;
+        }
+
+        const QStringList subnets = parseRuSubnets(payload);
         if (subnets.size() < ruSubnetsMinCount) {
             qWarning() << "[SplitTunneling] RU subnets list rejected:" << host << "entries:" << subnets.size();
             downloadRuSubnets(sourceIndex + 1, errors + QStringList { QString("%1: %2").arg(host, tr("invalid list")) });
@@ -141,6 +157,10 @@ QStringList IpSplitTunnelingController::parseRuSubnets(const QByteArray &data)
         const quint32 mask = subnet.second == 0 ? 0 : ~quint32(0) << (32 - subnet.second);
         const QString network = QHostAddress(subnet.first.toIPv4Address() & mask).toString();
         subnets.append(QString("%1/%2").arg(network).arg(subnet.second));
+
+        if (subnets.size() >= ruSubnetsMaxCount) {
+            break;
+        }
     }
     subnets.removeDuplicates();
     return subnets;
