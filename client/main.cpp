@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QQuickWindow>
 #include <QTimer>
 #include <libssh/libssh.h>
 #include <openssl/ssl.h>
@@ -43,6 +44,7 @@ int main(int argc, char *argv[])
 
 #ifdef Q_OS_WIN
     AllowSetForegroundWindow(ASFW_ANY);
+    QQuickWindow::setDefaultAlphaBuffer(true);
 #endif
 
 #ifdef Q_OS_ANDROID

@@ -13,7 +13,7 @@ Rectangle {
 
     implicitHeight: column.implicitHeight + 8 + 8 + PageController.safeAreaBottomMargin
 
-    color: root.filled ? AmneziaStyle.color.bgSurfaceAlt : AmneziaStyle.color.bgBase
+    color: root.filled ? AmneziaStyle.color.bgSurfaceAlt : AmneziaStyle.color.bgBaseGlass
 
     ColumnLayout {
         id: column

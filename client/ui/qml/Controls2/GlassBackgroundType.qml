@@ -6,7 +6,7 @@ import Style 1.0
 Rectangle {
     id: root
 
-    color: AmneziaStyle.color.bgBase
+    color: AmneziaStyle.color.bgBaseGlass
     clip: true
 
     Shape {

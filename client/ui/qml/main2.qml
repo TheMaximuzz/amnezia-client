@@ -50,7 +50,7 @@ Window  {
 
     flags: Qt.platform.os === "ios" ? (Qt.Window | Qt.ExpandedClientAreaHint) : Qt.Window
 
-    color: AmneziaStyle.color.bgBase
+    color: Qt.platform.os === "windows" ? AmneziaStyle.color.transparent : AmneziaStyle.color.bgBase
 
     onClosing: function(close) {
         close.accepted = false

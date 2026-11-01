@@ -16,7 +16,12 @@
 #include <QDir>
 #include <QSettings>
 #include <QtQuick/QQuickWindow>  
-#include <QWindow>     
+#include <QWindow>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <dwmapi.h>
+#endif     
 
 #include "core/controllers/updateController.h"
 #include "core/protocols/qmlRegisterProtocols.h"
@@ -104,6 +109,25 @@ namespace {
 }
 #endif
 
+#ifdef Q_OS_WIN
+namespace {
+    void enableWindowGlass(QQuickWindow *window)
+    {
+        constexpr DWORD useImmersiveDarkMode = 20;
+        constexpr DWORD systemBackdropType = 38;
+        constexpr int transientWindowBackdrop = 3;
+
+        const HWND hwnd = reinterpret_cast<HWND>(window->winId());
+        const BOOL darkMode = TRUE;
+        DwmSetWindowAttribute(hwnd, useImmersiveDarkMode, &darkMode, sizeof(darkMode));
+
+        const MARGINS wholeWindow { -1, -1, -1, -1 };
+        DwmExtendFrameIntoClientArea(hwnd, &wholeWindow);
+        DwmSetWindowAttribute(hwnd, systemBackdropType, &transientWindowBackdrop, sizeof(transientWindowBackdrop));
+    }
+}
+#endif
+
 void AmneziaApplication::init()
 {
     m_engine = new QQmlApplicationEngine;
@@ -119,6 +143,9 @@ void AmneziaApplication::init()
             // install filter on main window
             if (auto win = qobject_cast<QQuickWindow*>(obj)) {
                 win->installEventFilter(this);
+#ifdef Q_OS_WIN
+                enableWindowGlass(win);
+#endif
 #ifdef Q_OS_ANDROID
                 QObject::connect(win, &QQuickWindow::sceneGraphError,
                     [](QQuickWindow::SceneGraphError, const QString &msg) {

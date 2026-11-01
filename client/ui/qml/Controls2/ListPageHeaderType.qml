@@ -103,7 +103,7 @@ Item {
 
         implicitHeight: navigationBar.barHeight
 
-        color: AmneziaStyle.color.bgBase
+        color: AmneziaStyle.color.bgBaseGlass
 
         MouseArea {
             anchors.fill: parent
@@ -129,7 +129,7 @@ Item {
         y: topBar.height + Math.max(0, root.collapsibleHeight - root.listScrolled)
         height: pinnedColumn.implicitHeight
 
-        color: AmneziaStyle.color.bgBase
+        color: AmneziaStyle.color.bgBaseGlass
 
         MouseArea {
             anchors.fill: parent

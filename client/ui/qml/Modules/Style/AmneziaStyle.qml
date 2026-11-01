@@ -16,6 +16,7 @@ QtObject {
         readonly property color textStaticWhite: '#FFFFFF'
 
         readonly property color bgBase: '#0D0B0A'
+        readonly property color bgBaseGlass: Qt.platform.os === "windows" ? '#B80D0B0A' : '#0D0B0A'
         readonly property color bgSurface: '#B8201C19'
         readonly property color bgSurfaceAlt: '#C72A2521'
         readonly property color bgSheet: '#F51C1916'

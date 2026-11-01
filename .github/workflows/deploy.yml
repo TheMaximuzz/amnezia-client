@@ -327,7 +327,7 @@ jobs:
     runs-on: macos-26
 
     needs: Bake-Prebuilts-iOS
-    if: ${{ always() }}
+    if: ${{ always() && github.repository_owner == 'amnezia-vpn' }}
 
     env:
       QT_VERSION: 6.10.1
@@ -475,7 +475,7 @@ jobs:
     runs-on: macos-26
 
     needs: Bake-Prebuilts-MacOS
-    if: ${{ always() }}
+    if: ${{ always() && github.repository_owner == 'amnezia-vpn' }}
 
     env:
       QT_VERSION: 6.10.1
@@ -625,7 +625,7 @@ jobs:
     runs-on: macos-26
 
     needs: Bake-Prebuilts-MacOS-NE
-    if: ${{ always() }}
+    if: ${{ always() && github.repository_owner == 'amnezia-vpn' }}
 
     env:
       QT_VERSION: 6.10.1
@@ -1064,6 +1064,7 @@ jobs:
           - GatewayServiceImportTest
 
     runs-on: ubuntu-22.04
+    if: github.repository_owner == 'amnezia-vpn'
 
     env:
       QT_VERSION: 6.10.1
@@ -1173,6 +1174,7 @@ jobs:
       cancel-in-progress: false
 
     runs-on: ubuntu-22.04
+    if: github.repository_owner == 'amnezia-vpn'
 
     env:
       QT_VERSION: 6.10.1
@@ -1281,6 +1283,7 @@ jobs:
           - GatewayServiceImportTest
 
     runs-on: windows-latest
+    if: github.repository_owner == 'amnezia-vpn'
 
     env:
       QT_VERSION: 6.10.1
@@ -1400,6 +1403,7 @@ jobs:
           - GatewayServiceImportTest
 
     runs-on: macos-15
+    if: github.repository_owner == 'amnezia-vpn'
 
     env:
       QT_VERSION: 6.10.1

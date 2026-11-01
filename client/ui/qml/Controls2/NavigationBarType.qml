@@ -111,7 +111,7 @@ Item {
         height: root.barHeight
         y: d.scrolled
 
-        color: d.scrolled > 0 ? AmneziaStyle.color.bgBase : AmneziaStyle.color.transparent
+        color: d.scrolled > 0 ? AmneziaStyle.color.bgBaseGlass : AmneziaStyle.color.transparent
 
         MouseArea {
             anchors.fill: parent
