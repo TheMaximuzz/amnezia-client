@@ -8,7 +8,10 @@
 
 namespace
 {
-    const QUrl ruSubnetsUrl("https://www.ipdeny.com/ipblocks/data/aggregated/ru-aggregated.zone");
+    const QList<QUrl> ruSubnetsUrls {
+        QUrl("https://raw.githubusercontent.com/ipverse/rir-ip/master/country/ru/ipv4-aggregated.txt"),
+        QUrl("https://www.ipdeny.com/ipblocks/data/aggregated/ru-aggregated.zone"),
+    };
     constexpr int ruSubnetsMaxAgeDays = 7;
     constexpr int ruSubnetsCheckIntervalMs = 60 * 60 * 1000;
     constexpr int ruSubnetsRequestTimeoutMs = 30000;
@@ -81,30 +84,41 @@ void IpSplitTunnelingController::updateRuSubnets()
     }
     m_ruSubnetsUpdating = true;
     emit ruSubnetsUpdateStarted();
+    downloadRuSubnets(0, {});
+}
 
-    QNetworkRequest request(ruSubnetsUrl);
+void IpSplitTunnelingController::downloadRuSubnets(int sourceIndex, const QStringList &errors)
+{
+    if (sourceIndex >= ruSubnetsUrls.size()) {
+        m_ruSubnetsUpdating = false;
+        emit ruSubnetsUpdateFailed(tr("Failed to download the list of Russian addresses: %1").arg(errors.join("; ")));
+        return;
+    }
+
+    QNetworkRequest request(ruSubnetsUrls.at(sourceIndex));
     request.setTransferTimeout(ruSubnetsRequestTimeoutMs);
     QNetworkReply *reply = m_networkManager.get(request);
 
-    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+    connect(reply, &QNetworkReply::finished, this, [this, reply, sourceIndex, errors]() {
         reply->deleteLater();
-        m_ruSubnetsUpdating = false;
+        const QString host = reply->url().host();
 
         if (reply->error() != QNetworkReply::NoError) {
-            qWarning() << "[SplitTunneling] RU subnets download failed:" << reply->errorString();
-            emit ruSubnetsUpdateFailed(tr("Failed to download the list of Russian addresses: %1").arg(reply->errorString()));
+            qWarning() << "[SplitTunneling] RU subnets download failed:" << host << reply->errorString();
+            downloadRuSubnets(sourceIndex + 1, errors + QStringList { QString("%1: %2").arg(host, reply->errorString()) });
             return;
         }
 
         const QStringList subnets = parseRuSubnets(reply->readAll());
         if (subnets.size() < ruSubnetsMinCount) {
-            qWarning() << "[SplitTunneling] RU subnets list rejected, entries:" << subnets.size();
-            emit ruSubnetsUpdateFailed(tr("The downloaded list of Russian addresses is invalid"));
+            qWarning() << "[SplitTunneling] RU subnets list rejected:" << host << "entries:" << subnets.size();
+            downloadRuSubnets(sourceIndex + 1, errors + QStringList { QString("%1: %2").arg(host, tr("invalid list")) });
             return;
         }
 
+        m_ruSubnetsUpdating = false;
         m_appSettingsRepository->setRuSubnets(subnets, QDateTime::currentDateTimeUtc());
-        qDebug() << "[SplitTunneling] RU subnets updated, entries:" << subnets.size();
+        qDebug() << "[SplitTunneling] RU subnets updated from" << host << "entries:" << subnets.size();
         emit ruSubnetsUpdated();
     });
 }

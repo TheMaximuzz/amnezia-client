@@ -71,6 +71,7 @@ private:
     void processSiteAfterResolve(const QString &hostname, const QStringList &ips);
     void processSite(const QString &hostname, const QStringList &ips);
     void updateRuSubnetsIfStale();
+    void downloadRuSubnets(int sourceIndex, const QStringList &errors);
 
     SecureAppSettingsRepository* m_appSettingsRepository;
     QNetworkAccessManager m_networkManager;

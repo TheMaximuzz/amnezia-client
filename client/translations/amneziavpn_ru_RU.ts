@@ -683,8 +683,8 @@ Already installed containers were found on the server. All installed containers 
         <translation>Не удалось скачать список российских адресов: %1</translation>
     </message>
     <message>
-        <source>The downloaded list of Russian addresses is invalid</source>
-        <translation>Скачанный список российских адресов некорректен</translation>
+        <source>invalid list</source>
+        <translation>некорректный список</translation>
     </message>
 </context>
 <context>

@@ -29,6 +29,14 @@ PageType {
     }
 
     Connections {
+        target: IpSplitTunnelingController
+
+        function onErrorOccurred(errorMessage) {
+            PageController.showErrorMessage(errorMessage)
+        }
+    }
+
+    Connections {
         target: WindowsSplitTunnelingController
 
         function onFinished(message) {
@@ -172,7 +180,7 @@ PageType {
                 Layout.rightMargin: 16
 
                 visible: IpSplitTunnelingController.isRuSubnetsBypassEnabled
-                enabled: root.pageEnabled && !IpSplitTunnelingController.isRuSubnetsUpdating
+                enabled: !IpSplitTunnelingController.isRuSubnetsUpdating
 
                 text: qsTr("Update the list of Russian addresses now")
                 trailingIconSource: "qrc:/images/controls/refresh-cw.svg"
