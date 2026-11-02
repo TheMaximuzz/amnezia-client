@@ -77,30 +77,6 @@ WireguardConfigurator::ConnectionData WireguardConfigurator::genClientKeys()
     return connData;
 }
 
-QString WireguardConfigurator::publicKeyFromPrivate(const QString &privateKeyBase64)
-{
-    constexpr size_t keyLength = 32;
-
-    const QByteArray privateKey = QByteArray::fromBase64(privateKeyBase64.toLatin1());
-    if (static_cast<size_t>(privateKey.size()) != keyLength) {
-        return {};
-    }
-
-    EVP_PKEY *key = EVP_PKEY_new_raw_private_key(EVP_PKEY_X25519, nullptr,
-                                                 reinterpret_cast<const unsigned char *>(privateKey.constData()), keyLength);
-    if (!key) {
-        return {};
-    }
-
-    unsigned char publicKey[keyLength];
-    size_t publicKeySize = keyLength;
-    const bool ok = EVP_PKEY_get_raw_public_key(key, publicKey, &publicKeySize) == 1;
-    EVP_PKEY_free(key);
-
-    return ok ? QString::fromLatin1(QByteArray(reinterpret_cast<const char *>(publicKey), static_cast<int>(publicKeySize)).toBase64())
-              : QString();
-}
-
 QList<QHostAddress> WireguardConfigurator::getIpsFromConf(const QString &input)
 {
     QRegularExpression regex("AllowedIPs = (\\d+\\.\\d+\\.\\d+\\.\\d+)");

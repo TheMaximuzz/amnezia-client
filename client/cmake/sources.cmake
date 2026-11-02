@@ -45,7 +45,6 @@ set(HEADERS ${HEADERS}
     ${CLIENT_ROOT_DIR}/core/controllers/connectionController.h
     ${CLIENT_ROOT_DIR}/core/controllers/settingsController.h
     ${CLIENT_ROOT_DIR}/core/controllers/localProxyController.h
-    ${CLIENT_ROOT_DIR}/core/controllers/localInterfaceController.h
     ${CLIENT_ROOT_DIR}/core/controllers/logsController.h
     ${CLIENT_ROOT_DIR}/core/controllers/api/servicesCatalogController.h
     ${CLIENT_ROOT_DIR}/core/controllers/api/storePurchaseController.h
@@ -136,7 +135,6 @@ set(SOURCES ${SOURCES}
     ${CLIENT_ROOT_DIR}/core/controllers/connectionController.cpp
     ${CLIENT_ROOT_DIR}/core/controllers/settingsController.cpp
     ${CLIENT_ROOT_DIR}/core/controllers/localProxyController.cpp
-    ${CLIENT_ROOT_DIR}/core/controllers/localInterfaceController.cpp
     ${CLIENT_ROOT_DIR}/core/controllers/logsController.cpp
     ${CLIENT_ROOT_DIR}/core/controllers/api/servicesCatalogController.cpp
     ${CLIENT_ROOT_DIR}/core/controllers/api/storePurchaseController.cpp

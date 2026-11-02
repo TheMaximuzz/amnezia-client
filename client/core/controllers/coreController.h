@@ -29,7 +29,6 @@
 #include "ui/controllers/serversUiController.h"
 #include "ui/controllers/ipSplitTunnelingUiController.h"
 #include "ui/controllers/windowsSplitTunnelingUiController.h"
-#include "ui/controllers/localInterfaceUiController.h"
 #include "ui/controllers/systemController.h"
 #include "ui/controllers/languageUiController.h"
 #include "ui/controllers/updateUiController.h"
@@ -40,7 +39,6 @@
 #include "core/controllers/selfhosted/usersController.h"
 #include "core/controllers/appSplitTunnelingController.h"
 #include "core/controllers/ipSplitTunnelingController.h"
-#include "core/controllers/localInterfaceController.h"
 #include "core/controllers/allowedDnsController.h"
 #include "core/controllers/api/servicesCatalogController.h"
 #include "core/controllers/api/storePurchaseController.h"
@@ -192,7 +190,6 @@ private:
     NetworkReachabilityController* m_networkReachabilityController;
     AppSplitTunnelingUiController* m_appSplitTunnelingUiController;
     WindowsSplitTunnelingUiController* m_windowsSplitTunnelingUiController;
-    LocalInterfaceUiController* m_localInterfaceUiController;
     AllowedDnsUiController* m_allowedDnsUiController;
     LanguageUiController* m_languageUiController;
     UpdateUiController* m_updateUiController;
@@ -217,7 +214,6 @@ private:
     ConnectionController* m_connectionController;
     SettingsController* m_settingsController;
     LocalProxyController* m_localProxyController;
-    LocalInterfaceController* m_localInterfaceController;
 
     ContainersModel* m_containersModel;
     ContainersModel* m_defaultServerContainersModel;

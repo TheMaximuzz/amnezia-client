@@ -118,20 +118,6 @@ PageType {
                 }
 
                 ListItemType {
-                    Layout.fillWidth: true
-
-                    visible: !GC.isMobile()
-
-                    text: qsTr("Local interface")
-                    subtitle: qsTr("Address, keys, MTU, scripts and local traffic")
-                    trailingIconSource: "qrc:/images/controls/chevron-right.svg"
-
-                    onClicked: {
-                        PageController.goToPage(PageEnum.PageSettingsLocalInterface)
-                    }
-                }
-
-                ListItemType {
                     id: killSwitchButton
 
                     Layout.fillWidth: true

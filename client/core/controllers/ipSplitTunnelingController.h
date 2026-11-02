@@ -9,9 +9,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QHostInfo>
-#include <QDateTime>
-#include <QNetworkAccessManager>
-#include <QTimer>
 
 #include "core/utils/errorCodes.h"
 #include "core/utils/routeModes.h"
@@ -49,16 +46,6 @@ public:
     bool isRuSubnetsBypassEnabled() const;
     void setRuSubnetsBypassEnabled(bool enabled);
     int ruSubnetsCount() const;
-    QDateTime ruSubnetsUpdatedAt() const;
-    bool isRuSubnetsUpdating() const;
-    void updateRuSubnets();
-
-    static QStringList parseRuSubnets(const QByteArray &data);
-
-signals:
-    void ruSubnetsUpdateStarted();
-    void ruSubnetsUpdated();
-    void ruSubnetsUpdateFailed(const QString &errorMessage);
 
 private slots:
     void onHostResolved(const QHostInfo &hostInfo);
@@ -70,13 +57,8 @@ private:
     static bool validateHostname(const QString &hostname);
     void processSiteAfterResolve(const QString &hostname, const QStringList &ips);
     void processSite(const QString &hostname, const QStringList &ips);
-    void updateRuSubnetsIfStale();
-    void downloadRuSubnets(int sourceIndex, const QStringList &errors);
 
     SecureAppSettingsRepository* m_appSettingsRepository;
-    QNetworkAccessManager m_networkManager;
-    QTimer m_ruSubnetsCheckTimer;
-    bool m_ruSubnetsUpdating = false;
     RouteMode m_currentRouteMode;
     QVector<QPair<QString, QStringList>> m_sites;
 };

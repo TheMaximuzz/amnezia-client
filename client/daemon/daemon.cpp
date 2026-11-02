@@ -266,7 +266,6 @@ bool Daemon::parseConfig(const QJsonObject& obj, InterfaceConfig& config) {
   }
 
   config.m_persistentKeepalive = obj.value("persistentKeepalive").toString();
-  config.m_listenPort = obj.value("listenPort").toInt();
 
   config.m_deviceIpv4Address = obj.value("deviceIpv4Address").toString();
   config.m_deviceIpv6Address = obj.value("deviceIpv6Address").toString();

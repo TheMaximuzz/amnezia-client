@@ -174,19 +174,6 @@ PageType {
                 }
             }
 
-            ListItemType {
-                Layout.fillWidth: true
-                Layout.leftMargin: 16
-                Layout.rightMargin: 16
-
-                visible: IpSplitTunnelingController.isRuSubnetsBypassEnabled
-                enabled: !IpSplitTunnelingController.isRuSubnetsUpdating
-
-                text: qsTr("Update the list of Russian addresses now")
-                trailingIconSource: "qrc:/images/controls/refresh-cw.svg"
-
-                onClicked: IpSplitTunnelingController.updateRuSubnets()
-            }
         }
     }
 

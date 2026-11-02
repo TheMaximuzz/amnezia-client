@@ -33,7 +33,6 @@ namespace PageLoader
         PageSettingsSplitTunneling,
         PageSettingsAppSplitTunneling,
         PageSettingsWindowsSplitTunneling,
-        PageSettingsLocalInterface,
         PageSettingsKillSwitch,
         PageSettingsApiServerInfo,
         PageSettingsApiAvailableCountries,

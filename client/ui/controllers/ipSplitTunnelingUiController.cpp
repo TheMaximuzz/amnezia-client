@@ -1,7 +1,6 @@
 #include "ipSplitTunnelingUiController.h"
 
 #include <QDebug>
-#include <QLocale>
 
 #include "systemController.h"
 #include "core/utils/errorCodes.h"
@@ -15,16 +14,6 @@ IpSplitTunnelingUiController::IpSplitTunnelingUiController(IpSplitTunnelingContr
       m_ipSplitTunnelingModel(ipSplitTunnelingModel)
 {
     m_ipSplitTunnelingModel->updateModel(m_ipSplitTunnelingController->getCurrentSites());
-
-    connect(m_ipSplitTunnelingController, &IpSplitTunnelingController::ruSubnetsUpdateStarted, this,
-            &IpSplitTunnelingUiController::ruSubnetsStateChanged);
-    connect(m_ipSplitTunnelingController, &IpSplitTunnelingController::ruSubnetsUpdated, this,
-            &IpSplitTunnelingUiController::ruSubnetsStateChanged);
-    connect(m_ipSplitTunnelingController, &IpSplitTunnelingController::ruSubnetsUpdateFailed, this,
-            [this](const QString &errorMessage) {
-                emit ruSubnetsStateChanged();
-                emit errorOccurred(errorMessage);
-            });
 }
 
 void IpSplitTunnelingUiController::addSite(QString hostname)
@@ -93,35 +82,18 @@ void IpSplitTunnelingUiController::toggleRuSubnetsBypass(bool enabled)
     emit ruSubnetsStateChanged();
 }
 
-void IpSplitTunnelingUiController::updateRuSubnets()
-{
-    m_ipSplitTunnelingController->updateRuSubnets();
-}
-
 bool IpSplitTunnelingUiController::isRuSubnetsBypassEnabled() const
 {
     return m_ipSplitTunnelingController->isRuSubnetsBypassEnabled();
 }
 
-bool IpSplitTunnelingUiController::isRuSubnetsUpdating() const
-{
-    return m_ipSplitTunnelingController->isRuSubnetsUpdating();
-}
-
 QString IpSplitTunnelingUiController::ruSubnetsStatus() const
 {
-    if (m_ipSplitTunnelingController->isRuSubnetsUpdating()) {
-        return tr("Updating the list...");
+    const int count = m_ipSplitTunnelingController->ruSubnetsCount();
+    if (count == 0) {
+        return tr("The list is empty");
     }
-
-    const QDateTime updatedAt = m_ipSplitTunnelingController->ruSubnetsUpdatedAt();
-    if (!updatedAt.isValid() || m_ipSplitTunnelingController->ruSubnetsCount() == 0) {
-        return tr("The list has not been downloaded yet");
-    }
-
-    return tr("%1 networks, updated %2, refreshed weekly")
-            .arg(m_ipSplitTunnelingController->ruSubnetsCount())
-            .arg(QLocale().toString(updatedAt.toLocalTime(), QLocale::ShortFormat));
+    return tr("%1 networks").arg(count);
 }
 
 int IpSplitTunnelingUiController::getRouteMode() const

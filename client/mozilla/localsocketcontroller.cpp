@@ -155,7 +155,6 @@ void LocalSocketController::activate(const QJsonObject &rawConfig) {
   json.insert("serverIpv4AddrIn", wgConfig.value(amnezia::configKey::hostName));
   //  json.insert("serverIpv6AddrIn", QJsonValue(hop.m_server.ipv6AddrIn()));
   json.insert("deviceMTU", wgConfig.value(amnezia::configKey::mtu));
-  json.insert("listenPort", rawConfig.value(amnezia::configKey::listenPort).toInt());
 
   json.insert("serverPort", wgConfig.value(amnezia::configKey::port).toInt());
   json.insert("serverIpv4Gateway", wgConfig.value(amnezia::configKey::hostName));

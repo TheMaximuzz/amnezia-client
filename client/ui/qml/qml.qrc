@@ -161,7 +161,6 @@
         <file>Pages2/PageSettingsServersList.qml</file>
         <file>Pages2/PageSettingsSplitTunneling.qml</file>
         <file>Pages2/PageSettingsWindowsSplitTunneling.qml</file>
-        <file>Pages2/PageSettingsLocalInterface.qml</file>
         <file>Pages2/PageSettingsNewsNotifications.qml</file>
         <file>Pages2/PageSettingsNewsDetail.qml</file>
         <file>Pages2/PageUpdate.qml</file>

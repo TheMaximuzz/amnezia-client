@@ -8,7 +8,6 @@
 #include <QHostInfo>
 #include <QJsonObject>
 #include <QObject>
-#include <QProcess>
 #include <QSharedPointer>
 #include <QString>
 #include <QStringList>
@@ -208,39 +207,6 @@ void VpnConnection::setRepositories(SecureServersRepository* serversRepository, 
     m_appSettingsRepository = appSettingsRepository;
 }
 
-void VpnConnection::runConnectionScript(const QString &stage, bool waitForFinish) const
-{
-    const QString command = m_appSettingsRepository->connectionScript(stage).trimmed();
-    if (command.isEmpty()) {
-        return;
-    }
-
-    const int timeoutMs = qMax(1, m_appSettingsRepository->connectionScriptTimeout()) * 1000;
-    auto *process = new QProcess();
-#ifdef Q_OS_WIN
-    process->setProgram("cmd.exe");
-    process->setNativeArguments("/C " + command);
-#else
-    process->setProgram("/bin/sh");
-    process->setArguments({ "-c", command });
-#endif
-    process->setProcessChannelMode(QProcess::ForwardedChannels);
-
-    QObject::connect(process, &QProcess::finished, process, [process, stage](int exitCode) {
-        qInfo() << "[ConnectionScript]" << stage << "finished with code" << exitCode;
-        process->deleteLater();
-    });
-    QTimer::singleShot(timeoutMs, process, [process, stage]() {
-        qWarning() << "[ConnectionScript]" << stage << "timed out";
-        process->kill();
-    });
-
-    process->start();
-    if (waitForFinish) {
-        process->waitForFinished(timeoutMs);
-    }
-}
-
 QStringList VpnConnection::siteSubnets(amnezia::RouteMode mode) const
 {
     QStringList subnets;
@@ -412,10 +378,6 @@ void VpnConnection::connectToVpn(const QString &serverId, DockerContainer contai
         m_vpnProtocol.reset();
     }
     appendKillSwitchConfig();
-    if (m_appSettingsRepository->listenPort() > 0) {
-        m_vpnConfiguration.insert(configKey::listenPort, m_appSettingsRepository->listenPort());
-    }
-    runConnectionScript("preUp", true);
 #endif
 
     appendSplitTunnelingConfig();
@@ -557,13 +519,6 @@ void VpnConnection::appendSplitTunnelingConfig()
 
     m_vpnConfiguration.insert(configKey::splitTunnelType, routeMode);
     m_vpnConfiguration.insert(configKey::splitTunnelSites, sitesJsonArray);
-#ifdef AMNEZIA_DESKTOP
-    if (m_appSettingsRepository->isLocalTrafficAllowed()) {
-        for (const auto &localNetwork : { "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16" }) {
-            excludedSitesJsonArray.append(QString::fromLatin1(localNetwork));
-        }
-    }
-#endif
     m_vpnConfiguration.insert(configKey::splitTunnelExcludedSites, excludedSitesJsonArray);
 
     amnezia::AppsRouteMode appsRouteMode = amnezia::AppsRouteMode::VpnAllApps;
@@ -680,10 +635,6 @@ void VpnConnection::disconnectFromVpn()
                           });
 #endif
 
-#ifdef AMNEZIA_DESKTOP
-    runConnectionScript("preDown", true);
-#endif
-
     m_vpnProtocol->stop();
 
 #if !defined(Q_OS_ANDROID) && !defined(AMNEZIA_DESKTOP)
@@ -695,15 +646,6 @@ void VpnConnection::disconnectFromVpn()
 
 void VpnConnection::setConnectionState(Vpn::ConnectionState state) {
     onConnectionStateChanged(state);
-
-#ifdef AMNEZIA_DESKTOP
-    if (state == Vpn::ConnectionState::Connected && m_connectionState != Vpn::ConnectionState::Connected) {
-        runConnectionScript("postUp", false);
-    } else if (state == Vpn::ConnectionState::Disconnected && m_connectionState != Vpn::ConnectionState::Disconnected
-               && m_connectionState != Vpn::ConnectionState::Reconnecting) {
-        runConnectionScript("postDown", false);
-    }
-#endif
 
     if (state == Vpn::Disconnected && m_connectionState == Vpn::Reconnecting)
         return;

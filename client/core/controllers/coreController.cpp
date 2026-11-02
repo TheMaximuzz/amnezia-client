@@ -189,7 +189,6 @@ void CoreController::initCoreControllers()
     m_connectionController = new ConnectionController(m_serversRepository, m_appSettingsRepository, m_vpnConnection.get(), this);
     m_settingsController = new SettingsController(m_serversRepository, m_appSettingsRepository, this);
     m_localProxyController = new LocalProxyController(m_serversRepository, m_appSettingsRepository, m_subscriptionController, this);
-    m_localInterfaceController = new LocalInterfaceController(m_serversController, m_installController, m_appSettingsRepository, this);
 }
 
 void CoreController::initControllers()
@@ -249,8 +248,6 @@ void CoreController::initControllers()
             m_runningProcessesModel, this);
     setQmlContextProperty("WindowsSplitTunnelingController", m_windowsSplitTunnelingUiController);
 
-    m_localInterfaceUiController = new LocalInterfaceUiController(m_localInterfaceController, this);
-    setQmlContextProperty("LocalInterfaceController", m_localInterfaceUiController);
 
     m_systemController = new SystemController(this);
     setQmlContextProperty("SystemController", m_systemController);
