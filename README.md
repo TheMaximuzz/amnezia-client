@@ -1,4 +1,4 @@
-# Amnezia VPN
+# Amnezia VPN by maximuzz
 
 ### _The best client for self-hosted VPN_
 
